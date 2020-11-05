@@ -3,6 +3,7 @@ package com.zhangws;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -46,6 +47,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
     private String text;
 
     private int textSize = 15;
+    private Drawable mIndicatorSrc;
 
     private int lineCount = 0;
 
@@ -70,7 +72,6 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
     private OnExtendListener mListener;
 
     private float mSpacingMult = 1;
-
 
 
     public ExtendTextView(Context context) {
@@ -101,7 +102,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
         }
 
         mTextPadding = typedArray.getDimension(R.styleable.ExtendTextView_text_padding, 0);
-
+        mIndicatorSrc = typedArray.getDrawable(R.styleable.ExtendTextView_indicator);
         mAnimationDuration = typedArray.getInteger(R.styleable.ExtendTextView_animation_duration, 1000);
 
         mTextPaddingLeft = typedArray.getDimension(R.styleable.ExtendTextView_text_padding_left, mLeftMargin);
@@ -200,7 +201,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
         mTextView.setId(View.generateViewId());
         addView(mTextView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         mTextView.setMaxLines(maxLine);
-        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         mTextView.setText(mText);
         mTextView.setLineSpacing(mTextLineSpace, mSpacingMult);
         mTextView.setTextColor(mTextColor);
@@ -215,7 +216,11 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
 
     private void createIndicatorView() {
         ivIndicator = new ImageView(getContext());
-        ivIndicator.setImageResource(R.mipmap.extend_view_indicator);
+        if (mIndicatorSrc != null) {
+            ivIndicator.setImageDrawable(mIndicatorSrc);
+        } else {
+            ivIndicator.setImageResource(R.mipmap.extend_view_indicator);
+        }
         addView(ivIndicator);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         layoutParams.width = SystemUtil.dp2px(getContext(), 15f);

@@ -6,8 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:src="@color/white"
+        android:layout_height="wrap_content"/>
+
     <com.zhangws.ExtendTextView
         android:layout_width="match_parent"
+        app:text_size="16sp"
+        app:text_line_space="5dp"
+        app:indicator="@mipmap/ic_launcher"
+        app:indicator_position="ALIGN_PARENT_RIGHT"
         android:layout_height="match_parent"
         app:text="我是新小梦，这个一款支持折叠和伸展的TextView,常用在TextView文本较多，需要折叠显示，具有很强的自定义性，欢迎大家使用和Star~
 \n欢迎大家使用我开发记账软件：快速记账\nAPP没有广告、社区、也不需要付费，单纯记账和一些实用功能，欢迎开发者加入一起开发" />
