@@ -3,6 +3,10 @@
     <declare-styleable name="ExtendTextView">
         <attr name="indicator_margin_left" format="reference|dimension" />
         <attr name="indicator_margin_right" format="reference|dimension" />
+
+
+        <attr name="animation_duration" format="integer" />
+
         <attr name="indicator_position">
             <enum name="ALIGN_PARENT_LEFT" value="9"/>
             <enum name="ALIGN_PARENT_RIGHT" value="11"/>

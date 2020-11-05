@@ -41,7 +41,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
 
     private int lineSpace = SystemUtil.dp2px(getContext(), 3f);
 
-    private int mAnimationDuration = 2000;
+    private long mAnimationDuration = 1000;
 
     private String text;
 
@@ -71,7 +71,6 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
 
     private float mSpacingMult = 1;
 
-    private float mLineSpaceHeight;
 
 
     public ExtendTextView(Context context) {
@@ -97,13 +96,14 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
         mTextSize = typedArray.getDimension(R.styleable.ExtendTextView_text_size, mLeftMargin);
         mTextLineSpace = typedArray.getDimension(R.styleable.ExtendTextView_text_line_space, SystemUtil.dp2px(context, 3f));
         CharSequence text = typedArray.getText(R.styleable.ExtendTextView_text);
-        mLineSpaceHeight = mSpacingMult * mTextLineSpace;
         if (text != null) {
             mText = text.toString();
         }
 
-
         mTextPadding = typedArray.getDimension(R.styleable.ExtendTextView_text_padding, 0);
+
+        mAnimationDuration = typedArray.getInteger(R.styleable.ExtendTextView_animation_duration, 1000);
+
         mTextPaddingLeft = typedArray.getDimension(R.styleable.ExtendTextView_text_padding_left, mLeftMargin);
         mTextPaddingRight = typedArray.getDimension(R.styleable.ExtendTextView_text_padding_right, mLeftMargin);
         mTextPaddingTop = typedArray.getDimension(R.styleable.ExtendTextView_text_padding_top, mLeftMargin);
@@ -369,5 +369,13 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
         };
         animation.setDuration(mAnimationDuration);
         mTextView.startAnimation(animation);
+    }
+
+    public long getAnimationDuration() {
+        return mAnimationDuration;
+    }
+
+    public void setAnimationDuration(long mAnimationDuration) {
+        this.mAnimationDuration = mAnimationDuration;
     }
 }
