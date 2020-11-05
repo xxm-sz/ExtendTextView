@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.zhangws.ExtendTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:text="我是新小梦，这个一款支持折叠和伸展的TextView,常用在TextView文本较多，需要折叠显示，具有很强的自定义性，欢迎大家使用和Star~
+\n欢迎大家使用我开发记账软件：快速记账\nAPP没有广告、社区、也不需要付费，单纯记账和一些实用功能，欢迎开发者加入一起开发" />
+</LinearLayout>

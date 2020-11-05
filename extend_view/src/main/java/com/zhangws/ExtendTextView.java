@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -40,7 +41,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
 
     private int lineSpace = SystemUtil.dp2px(getContext(), 3f);
 
-    private int mAnimationDuration = 350;
+    private int mAnimationDuration = 2000;
 
     private String text;
 
@@ -68,6 +69,10 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
 
     private OnExtendListener mListener;
 
+    private float mSpacingMult = 1;
+
+    private float mLineSpaceHeight;
+
 
     public ExtendTextView(Context context) {
         this(context, null);
@@ -90,11 +95,11 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
 
         mTextColor = typedArray.getColor(R.styleable.ExtendTextView_text_color, Color.BLACK);
         mTextSize = typedArray.getDimension(R.styleable.ExtendTextView_text_size, mLeftMargin);
-        mTextLineSpace = typedArray.getDimension(R.styleable.ExtendTextView_text_line_space, SystemUtil.dp2px(context,3f));
+        mTextLineSpace = typedArray.getDimension(R.styleable.ExtendTextView_text_line_space, SystemUtil.dp2px(context, 3f));
         CharSequence text = typedArray.getText(R.styleable.ExtendTextView_text);
-
-        if (text!=null){
-            mText=text.toString();
+        mLineSpaceHeight = mSpacingMult * mTextLineSpace;
+        if (text != null) {
+            mText = text.toString();
         }
 
 
@@ -111,43 +116,48 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
 
     private void initListener() {
 
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!clickable) {
-                    return;
-                }
-                mTextView.clearAnimation();
-                if (status == STATUS_FOLD) {
-                    startExtend();
-                } else {
-                    startFold();
-                }
-
+        setOnClickListener(v -> {
+            if (!clickable) {
+                return;
             }
+            mTextView.clearAnimation();
+            if (status == STATUS_FOLD) {
+                startExtend();
+            } else {
+                startFold();
+            }
+
         });
     }
 
     private void startFold() {
-        int startValue = mTextView.getHeight();
-        int endValue = mTextView.getLineHeight() * maxLine - startValue + mTextView.getPaddingBottom() + mTextView.getPaddingTop();
         status = STATUS_FOLD;
         if (mListener != null) {
             mListener.fold();
         }
         foldIndicatorAnimator();
-        textAnimation(endValue, startValue);
+        Log.d(TAG,"text height:"+mTextView.getHeight());
+        Log.d(TAG,"calculate height:"+calculateHeight(maxLine));
+        textAnimation( mTextView.getHeight(),calculateHeight(maxLine) - mTextView.getHeight());
     }
 
     private void startExtend() {
         status = STATUS_EXPEND;
-        int startValue = mTextView.getHeight();
-        int endValue = mTextView.getLineCount() * mTextView.getLineHeight() - startValue + mTextView.getPaddingBottom() + mTextView.getPaddingTop();
-        extendIndicatorAnimation();
-        textAnimation(endValue, startValue);
         if (mListener != null) {
             mListener.expand();
         }
+
+        Log.d(TAG,"text height:"+mTextView.getHeight());
+        Log.d(TAG,"calculate height:"+( calculateHeight(mTextView.getLineCount()) - mTextView.getHeight()));
+        extendIndicatorAnimation();
+        textAnimation(mTextView.getHeight(), calculateHeight(mTextView.getLineCount()) - mTextView.getHeight());
+
+
+    }
+
+    private int calculateHeight(int lineCount) {
+        return mTextView.getLayout().getLineTop(lineCount)+mTextView.getCompoundPaddingTop()+mTextView.getCompoundPaddingBottom();
+        //return (int) (lineCount * mTextView.getLineHeight() + lineCount * mLineSpaceHeight + mTextView.getPaddingTop() + mTextView.getPaddingBottom());
     }
 
 
@@ -159,14 +169,15 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
             @Override
             public void onGlobalLayout() {
                 lineCount = mTextView.getLineCount();
+
                 if (lineCount < maxLine) {
                     clickable = false;
-                    mTextView.setHeight(mTextView.getLineCount() * mTextView.getLineHeight() + mTextView.getPaddingBottom() + mTextView.getPaddingTop());
+                    mTextView.setHeight(calculateHeight(mTextView.getLineCount()));
                     ivIndicator.setVisibility(View.GONE);
                 } else {
                     clickable = true;
                     ivIndicator.setVisibility(View.VISIBLE);
-                    mTextView.setHeight(maxLine * mTextView.getLineHeight() + mTextView.getPaddingBottom() + mTextView.getPaddingTop());
+                    mTextView.setHeight(calculateHeight(maxLine));
                 }
                 mTextView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
@@ -193,11 +204,11 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
         mTextView.setId(View.generateViewId());
         addView(mTextView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         mTextView.setMaxLines(maxLine);
-        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         mTextView.setText(mText);
-        mTextView.setLineSpacing(mTextLineSpace, 1);
+        mTextView.setLineSpacing(mTextLineSpace, mSpacingMult);
         mTextView.setTextColor(mTextColor);
-
+        mTextView.setBackgroundColor(Color.GRAY);
         if (mTextPadding == 0) {
             mTextView.setPadding((int) mTextPaddingLeft, (int) mTextPaddingTop, (int) mTextPaddingRight, (int) mTextPaddingBottom);
         } else {
@@ -219,6 +230,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
         layoutParams.topMargin = SystemUtil.dp2px(getContext(), 10f);
         layoutParams.bottomMargin = SystemUtil.dp2px(getContext(), 10f);
         ivIndicator.setLayoutParams(layoutParams);
+        ivIndicator.setBackgroundColor(Color.RED);
         setIndicatorPosition(mIndicatorPosition);
     }
 
@@ -226,7 +238,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
     @Override
     public void extend() {
         if (lineCount > maxLine) {
-            startFold();
+            startExtend();
         }
     }
 
@@ -302,7 +314,6 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
      */
     public void setMaxLine(int maxLine) {
         this.maxLine = maxLine;
-        registerGlobalLayoutListener();
     }
 
     /**
@@ -315,7 +326,6 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
      */
     public void setTextPadding(int left, int top, int right, int bottom) {
         mTextView.setPadding(left, top, right, bottom);
-        registerGlobalLayoutListener();
     }
 
     /**
@@ -357,11 +367,11 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
      * @param endValue
      * @param startValue
      */
-    private void textAnimation(int endValue, int startValue) {
+    private void textAnimation(int startValue,int endValue) {
         Animation animation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                mTextView.setHeight((int) (startValue + endValue * interpolatedTime) + 8);
+                mTextView.setHeight((int) (startValue + endValue * interpolatedTime));
             }
         };
         animation.setDuration(mAnimationDuration);
