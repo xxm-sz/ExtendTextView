@@ -9,19 +9,19 @@
 
 1、项目根目录添加如下依赖(已经有了就不用添加啦)
 ```
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
+allprojects {
+    repositories {
+	...
+	maven { url 'https://jitpack.io' }
+    }
+}
   
 ```
 2、需要使用的组件添加如下依赖：
 ```
-	dependencies {
-	        implementation 'com.github.Android-XXM:ExtendTextView:1.0.1'
-	}
+dependencies {
+    implementation 'com.github.Android-XXM:ExtendTextView:1.0.1'
+}
 ```
 3、在XML文件
 ```
