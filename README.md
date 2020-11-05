@@ -20,7 +20,7 @@ allprojects {
 2、需要使用的组件添加如下依赖：
 ```
 dependencies {
-    implementation 'com.github.Android-XXM:ExtendTextView:1.0.1'
+    implementation 'com.github.Android-XXM:ExtendTextView:1.0.2'
 }
 ```
 3、在XML文件
