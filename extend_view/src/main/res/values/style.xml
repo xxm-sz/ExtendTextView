@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExtendTextView">
+        <attr name="indicator_margin_left" format="reference|dimension" />
+        <attr name="indicator_margin_right" format="reference|dimension" />
+        <attr name="indicator_position">
+            <enum name="ALIGN_PARENT_LEFT" value="9"/>
+            <enum name="ALIGN_PARENT_RIGHT" value="11"/>
+            <enum name="CENTER_HORIZONTAL" value="14"/>
+        </attr>
+
+        <attr name="text_padding_left" format="reference|dimension" />
+        <attr name="text_padding" format="reference|dimension" />
+        <attr name="text_padding_right" format="reference|dimension" />
+        <attr name="text_padding_top" format="reference|dimension" />
+        <attr name="text_padding_bottom" format="reference|dimension" />
+        <attr name="text_size" format="reference|dimension" />
+        <attr name="text_color" format="reference|color" />
+        <attr name="text" format="reference|string" />
+        <attr name="text_line_space" format="reference|dimension" />
+    </declare-styleable>
+</resources>

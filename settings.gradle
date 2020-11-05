@@ -1,0 +1,3 @@
+include ':extend_view'
+include ':app'
+rootProject.name = "Extend_Text_View"
