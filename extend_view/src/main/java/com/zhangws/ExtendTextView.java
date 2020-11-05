@@ -136,9 +136,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
             mListener.fold();
         }
         foldIndicatorAnimator();
-        Log.d(TAG,"text height:"+mTextView.getHeight());
-        Log.d(TAG,"calculate height:"+calculateHeight(maxLine));
-        textAnimation( mTextView.getHeight(),calculateHeight(maxLine) - mTextView.getHeight());
+        textAnimation(mTextView.getHeight(), calculateHeight(maxLine) - mTextView.getHeight());
     }
 
     private void startExtend() {
@@ -147,8 +145,6 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
             mListener.expand();
         }
 
-        Log.d(TAG,"text height:"+mTextView.getHeight());
-        Log.d(TAG,"calculate height:"+( calculateHeight(mTextView.getLineCount()) - mTextView.getHeight()));
         extendIndicatorAnimation();
         textAnimation(mTextView.getHeight(), calculateHeight(mTextView.getLineCount()) - mTextView.getHeight());
 
@@ -156,7 +152,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
     }
 
     private int calculateHeight(int lineCount) {
-        return mTextView.getLayout().getLineTop(lineCount)+mTextView.getCompoundPaddingTop()+mTextView.getCompoundPaddingBottom();
+        return mTextView.getLayout().getLineTop(lineCount) + mTextView.getCompoundPaddingTop() + mTextView.getCompoundPaddingBottom();
         //return (int) (lineCount * mTextView.getLineHeight() + lineCount * mLineSpaceHeight + mTextView.getPaddingTop() + mTextView.getPaddingBottom());
     }
 
@@ -208,7 +204,6 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
         mTextView.setText(mText);
         mTextView.setLineSpacing(mTextLineSpace, mSpacingMult);
         mTextView.setTextColor(mTextColor);
-        mTextView.setBackgroundColor(Color.GRAY);
         if (mTextPadding == 0) {
             mTextView.setPadding((int) mTextPaddingLeft, (int) mTextPaddingTop, (int) mTextPaddingRight, (int) mTextPaddingBottom);
         } else {
@@ -227,10 +222,8 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
         layoutParams.height = layoutParams.width;
         layoutParams.addRule(CENTER_HORIZONTAL);
         layoutParams.addRule(BELOW, mTextView.getId());
-        layoutParams.topMargin = SystemUtil.dp2px(getContext(), 10f);
         layoutParams.bottomMargin = SystemUtil.dp2px(getContext(), 10f);
         ivIndicator.setLayoutParams(layoutParams);
-        ivIndicator.setBackgroundColor(Color.RED);
         setIndicatorPosition(mIndicatorPosition);
     }
 
@@ -367,7 +360,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
      * @param endValue
      * @param startValue
      */
-    private void textAnimation(int startValue,int endValue) {
+    private void textAnimation(int startValue, int endValue) {
         Animation animation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
