@@ -1,11 +1,12 @@
 
-##一个可折叠伸展的TextView
+## 一个可折叠伸展的TextView
 
 效果图如下：当TextView文本大于指定最大行数是，自动实现重叠或伸展功能。
 
 ![效果图](https://github.com/Android-XXM/ExtendTextView/blob/master/app/1.gif)
 
-如何使用：
+## 如何使用：
+
 1、项目根目录添加如下依赖(已经有了就不用添加啦)
 ```
 	allprojects {
