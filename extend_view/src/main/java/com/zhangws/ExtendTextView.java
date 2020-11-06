@@ -167,7 +167,7 @@ public class ExtendTextView extends RelativeLayout implements ExtendView {
             public void onGlobalLayout() {
                 lineCount = mTextView.getLineCount();
 
-                if (lineCount < maxLine) {
+                if (lineCount < maxLine||lineCount==maxLine) {
                     clickable = false;
                     mTextView.setHeight(calculateHeight(mTextView.getLineCount()));
                     ivIndicator.setVisibility(View.GONE);
